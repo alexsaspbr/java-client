@@ -10,9 +10,9 @@ import java.net.http.HttpResponse;
 
 public class ProductClient {
 
-    public void getAll() {
+    public ProductDTO getById(Long id) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://dummyjson.com/products/1"))
+                .uri(URI.create("https://dummyjson.com/products/" + id))
                 .GET()
                 .build();
 
@@ -20,12 +20,31 @@ public class ProductClient {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response);
-            System.out.println(response.statusCode());
-            ProductDTO productDTO = new ObjectMapper().readValue(response.body(), ProductDTO.class);
-            System.out.println(productDTO.getId());
-            System.out.println(productDTO.getTitle());
-            System.out.println(productDTO.getDescription());
+            if(response.statusCode() == 200) {
+                return new ObjectMapper().readValue(response.body(), ProductDTO.class);
+            }
+            return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public PageProductsDTO getAll() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://dummyjson.com/products"))
+                .GET()
+                .build();
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200) {
+                return new ObjectMapper().readValue(response.body(), PageProductsDTO.class);
+            }
+            return null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {

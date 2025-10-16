@@ -2,11 +2,9 @@ package ada.tech;
 public class Main {
 
     public static void main(String[] args) {
-        Client client = new Client();
-        //client.getAddress();
-        //client.getProduct();
         ProductClient productClient = new ProductClient();
-        productClient.getAll();
+        //productClient.getAll().getProducts().forEach(productDTO -> System.out.println(productDTO.getTitle()));
+        System.out.println(productClient.getById(2L).getTitle());
     }
 
 
