@@ -1,4 +1,4 @@
-package ada.tech;
+package ada.tech.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
